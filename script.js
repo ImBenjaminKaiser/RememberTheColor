@@ -1,3 +1,12 @@
+
+function getColorVariants(inputColor, hueVariance, SaturationVariance, LuminanceVariance) {
+    satReplaced = inputColor.replace(/(?<=, )[^,]+(?=%,)/gm, SaturationVariance)
+    lumReplaced = satReplaced.replace(/(?<=%, )[^,]+(?=%)/gm, LuminanceVariance)
+    hueReplaced = lumReplaced.replace(/(?<=hsl\()[^,]+(?=,)/gm, hueVariance)
+
+    console.log(hueReplaced)
+}
+
 document.addEventListener("DOMContentLoaded", () => {
 
     if (page == "homepage"){
@@ -13,6 +22,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (page == "gamePage") {
-
+        getColorVariants("hsl(100, 100%, 50%)", "replace", "5", "5")
     }
 })
