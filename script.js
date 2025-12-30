@@ -44,7 +44,8 @@ function getColorVariants(inputColor, hueVariance, satVariance, lumVariance) {
         else {
 
             let adjustedHueValue = randomInteger(hueRandomNumberRange) % 255
-            let adjustedSatValue = randomInteger(satRandomNumberRange) % 100
+            let adjustedSatValue = randomInteger(satRandomNumberRange)
+            adjustedSatValue > 100 ? adjustedSatValue : 100
             let adjustedLumValue = randomInteger(lumRandomNumberRange) % 100
 
             satReplaced = inputColor.replace(/(?<=, )[^,]+(?=%,)/gm, adjustedSatValue)
@@ -56,7 +57,6 @@ function getColorVariants(inputColor, hueVariance, satVariance, lumVariance) {
             squareToColor.style.backgroundColor = hueReplacedFinalColor
         }
     }
-    // console.log(hueReplaced)
 }
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (page == "gamePage") {
         setTimeout(() => {
-            getColorVariants("hsl(100, 100%, 50%)", 50, 50, 50)
+            getColorVariants("hsl(100, 100%, 50%)", 80, 10, 10)
         }, 20);
         // document.body.style.backgroundColor = "hsl(100, 100%, 50%)"
     }
