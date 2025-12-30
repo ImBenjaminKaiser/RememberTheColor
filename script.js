@@ -29,28 +29,31 @@ function getColorVariants(inputColor, hueVariance, satVariance, lumVariance) {
 
     console.log(hueRandomNumberRange, satRandomNumberRange, lumRandomNumberRange)
 
-    let correctColorIndex = randomInteger([0,8])
+    let correctColorIndex = randomInteger([1,9])
 
     console.log(correctColorIndex)
 
-    for (let x = 0; x <= 8; x++) {
-        console.log(`loop ${x}`)
+    for (let x = 1; x <= 9; x++) {
+        // console.log(`loop ${x}`)
         if (correctColorIndex == x) {
-            console.log(`loop index matched correct square index: ${x}`)
-            correctSquare = console.log(colorSquares[x-1])
-            correctSquare.style.setProperty("backgroundColor", inputColor)
+            correctSquare = document.getElementsByClassName(`div${x}`)
+            correctSquare = Object.values(correctSquare)[0]
+            correctSquare.style.backgroundColor = inputColor
         }
 
         else {
 
-            let adjustedHueValue = randomInteger(hueRandomNumberRange)
-            let adjustedSatValue = randomInteger(satRandomNumberRange)
-            let adjustedLumValue = randomInteger(lumRandomNumberRange)
+            let adjustedHueValue = randomInteger(hueRandomNumberRange) % 255
+            let adjustedSatValue = randomInteger(satRandomNumberRange) % 100
+            let adjustedLumValue = randomInteger(lumRandomNumberRange) % 100
 
-            satReplaced = inputColor.replace(/(?<=, )[^,]+(?=%,)/gm, satVariance)
-            lumReplaced = satReplaced.replace(/(?<=%, )[^,]+(?=%)/gm, lumVariance)
-            hueReplaced = lumReplaced.replace(/(?<=hsl\()[^,]+(?=,)/gm, hueVariance)
-            computedColorValuesArray.push(hueReplaced)
+            satReplaced = inputColor.replace(/(?<=, )[^,]+(?=%,)/gm, adjustedSatValue)
+            lumReplaced = satReplaced.replace(/(?<=%, )[^,]+(?=%)/gm, adjustedLumValue)
+            hueReplacedFinalColor = lumReplaced.replace(/(?<=hsl\()[^,]+(?=,)/gm, adjustedHueValue)
+
+            squareToColor = document.getElementsByClassName(`div${x}`)
+            squareToColor = Object.values(squareToColor)[0]
+            squareToColor.style.backgroundColor = hueReplacedFinalColor
         }
     }
     // console.log(hueReplaced)
@@ -71,6 +74,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (page == "gamePage") {
-        getColorVariants("hsl(100, 100%, 50%)", 5, 5, 5)
+        setTimeout(() => {
+            getColorVariants("hsl(100, 100%, 50%)", 50, 50, 50)
+        }, 20);
+        // document.body.style.backgroundColor = "hsl(100, 100%, 50%)"
     }
 })
