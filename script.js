@@ -29,13 +29,14 @@ function getColorVariants(inputColor, hueVariance, satVariance, lumVariance) {
 
     console.log(hueRandomNumberRange, satRandomNumberRange, lumRandomNumberRange)
 
-    let correctColorIndex = randomInteger([1, 9])
+    let correctColorIndex = randomInteger([0,8])
 
     console.log(correctColorIndex)
 
-    for (let x = 1; x <= 9; x++) {
-        if (correctColorIndex-1 == x) {
-            console.log("loop index matched correct square index")
+    for (let x = 0; x <= 8; x++) {
+        console.log(`loop ${x}`)
+        if (correctColorIndex == x) {
+            console.log(`loop index matched correct square index: ${x}`)
             correctSquare = console.log(colorSquares[x-1])
             correctSquare.style.setProperty("backgroundColor", inputColor)
         }
