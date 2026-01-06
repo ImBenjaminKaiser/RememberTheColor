@@ -4,7 +4,7 @@ function randomInteger(rangeArray) {
 }
 
 
-function getColorVariants(inputColor, hueVariance, satVariance, lumVariance) {
+function getColorVariants(inputColor, hueVarianceMin, hueVarianceMax, satVarianceMin, satVarianceMax, lumVarianceMin, lumVarianceMax) {
 
     colorSquares = document.getElementsByClassName("colorGridSquare")
     console.log(colorSquares)
@@ -23,9 +23,9 @@ function getColorVariants(inputColor, hueVariance, satVariance, lumVariance) {
 
     console.log(inputColor, inputHue, inputSat, inputLum)
 
-    let hueRandomNumberRange = [Number(inputHue) + Number(hueVariance), Number(inputHue) - Number(hueVariance)]
-    let satRandomNumberRange = [Number(inputSat) + Number(satVariance), Number(inputSat) - Number(satVariance)]
-    let lumRandomNumberRange = [Number(inputLum) + Number(lumVariance), Number(inputLum) - Number(lumVariance)]
+    let hueRandomNumberRange = [hueVarianceMin + Number(inputHue), hueVarianceMax + Number(inputHue)]
+    let satRandomNumberRange = [satVarianceMin + Number(inputSat), satVarianceMax + Number(inputSat)]
+    let lumRandomNumberRange = [lumVarianceMin + Number(inputLum), lumVarianceMax + Number(inputLum)]
 
     console.log(hueRandomNumberRange, satRandomNumberRange, lumRandomNumberRange)
 
@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (page == "gamePage") {
         setTimeout(() => {
-            getColorVariants("hsl(100, 100%, 50%)", 80, 10, 10)
+            getColorVariants("hsl(100, 100%, 50%)", 15, 80, -5, -50, 10, 10)
         }, 20);
         // document.body.style.backgroundColor = "hsl(100, 100%, 50%)"
     }
