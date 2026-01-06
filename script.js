@@ -3,6 +3,10 @@ function randomInteger(rangeArray) {
   return Math.floor(Math.random() * (rangeArray[1] - rangeArray[0] + 1)) + rangeArray[0];
 }
 
+function randomIntegerBetweenRanges(rangeArray1, rangeArray2) {
+    arrayChoice = Math.random() < 0.5
+    return arrayChoice == True ? randomInteger(rangeArray1) : randomInteger(rangeArray2)
+}
 
 function getColorVariants(inputColor, hueVarianceMin, hueVarianceMax, satVarianceMin, satVarianceMax, lumVarianceMin, lumVarianceMax) {
 
