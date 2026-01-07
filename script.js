@@ -3,12 +3,12 @@ function randomInteger(rangeArray) {
   return Math.floor(Math.random() * (rangeArray[1] - rangeArray[0] + 1)) + rangeArray[0];
 }
 
-function randomIntegerBetweenRanges(rangeArray1, rangeArray2) {
+function randomIntegerBetweenRanges(rangeArray) {
     arrayChoice = Math.random() < 0.5
-    return arrayChoice == True ? randomInteger(rangeArray1) : randomInteger(rangeArray2)
+    return arrayChoice == true ? randomInteger([rangeArray[0],rangeArray[1]]) : randomInteger([rangeArray[2],rangeArray[3]])
 }
 
-function getColorVariants(inputColor, hueVarianceMin, hueVarianceMax, satVarianceMin, satVarianceMax, lumVarianceMin, lumVarianceMax) {
+function getColorVariants(inputColor, [hueVarianceMin, hueVarianceMax], [satVarianceMin, satVarianceMax], [lumVarianceMin, lumVarianceMax]) {
 
     colorSquares = document.getElementsByClassName("colorGridSquare")
     console.log(colorSquares)
@@ -27,9 +27,9 @@ function getColorVariants(inputColor, hueVarianceMin, hueVarianceMax, satVarianc
 
     console.log(inputColor, inputHue, inputSat, inputLum)
 
-    let hueRandomNumberRange = [hueVarianceMin + Number(inputHue), hueVarianceMax + Number(inputHue)]
-    let satRandomNumberRange = [satVarianceMin + Number(inputSat), satVarianceMax + Number(inputSat)]
-    let lumRandomNumberRange = [lumVarianceMin + Number(inputLum), lumVarianceMax + Number(inputLum)]
+    let hueRandomNumberRange = [hueVarianceMin + Number(inputHue), hueVarianceMax + Number(inputHue), hueVarianceMin - Number(inputHue), hueVarianceMax - Number(inputHue)]
+    let satRandomNumberRange = [satVarianceMin + Number(inputSat), satVarianceMax + Number(inputSat), satVarianceMin - Number(inputSat), hueVarianceMax - Number(inputSat)]
+    let lumRandomNumberRange = [lumVarianceMin + Number(inputLum), lumVarianceMax + Number(inputLum), lumVarianceMin - Number(inputLum), hueVarianceMax - Number(inputLum)]
 
     console.log(hueRandomNumberRange, satRandomNumberRange, lumRandomNumberRange)
 
@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (page == "gamePage") {
         setTimeout(() => {
-            getColorVariants("hsl(100, 100%, 50%)", 15, 80, -5, -50, 10, 10)
+            getColorVariants("hsl(100, 100%, 50%)", [15, 40], [-5, -50], [10, 30])
         }, 20);
         // document.body.style.backgroundColor = "hsl(100, 100%, 50%)"
     }
