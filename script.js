@@ -10,10 +10,36 @@ function randomIntegerBetweenRanges(rangeArray) {
     return arrayChoice == true ? randomInteger([rangeArray[0],rangeArray[1]]) : randomInteger([rangeArray[2],rangeArray[3]])
 }
 
-function getColorVariants(inputColor, [hueVarianceMin, hueVarianceMax], [satVarianceMin, satVarianceMax], [lumVarianceMin, lumVarianceMax]) {
+function manageCountdown(durationInSeconds) {
+    let span = document.getElementById("secondsRemaining")
+    console.log(span)
+    for (x = 0; x < durationInSeconds; x++) {
+        setTimeout( () => {
+            span.innerText = x
+        }, 1000);
+    }
+}
+
+function generateRandomHSLValueBetweenRanges([hueMax, hueMin], [satMax, satMin], [lumMax, lumMin]) {
+    let computedHue = randomInteger([hueMax, hueMin])
+    let computedSat = randomInteger([satMax, satMin])
+    let computedLum = randomInteger([lumMax, lumMin])
+    return `hsl(${computedHue}, ${computedSat}%, ${computedLum}%)`
+}
+
+function initializeMemorizePhase([hueMax, hueMin], [satMax, satMin], [lumMax, lumMin]) {
+    let rememberColorDiv = document.getElementById("rememberThisColor")
+    // console.log(rememberColorDiv)
+    let randomHSL = generateRandomHSLValueBetweenRanges([hueMax, hueMin], [satMax, satMin], [lumMax, lumMin])
+    console.log(randomHSL)
+    localStorage.setItem("currentHSLValue", randomHSL)
+    rememberColorDiv.style.backgroundColor = randomHSL
+}
+
+function setColorVariants(inputColor, [hueVarianceMin, hueVarianceMax], [satVarianceMin, satVarianceMax], [lumVarianceMin, lumVarianceMax]) {
 
     colorSquares = document.getElementsByClassName("colorGridSquare")
-    console.log(colorSquares)
+    // console.log(colorSquares)
     computedColorValuesArray = []
 
     let inputHue = /(?<=hsl\()[^,]+(?=,)/gm.exec(inputColor) // Get Hue value from hsl input
@@ -27,13 +53,13 @@ function getColorVariants(inputColor, [hueVarianceMin, hueVarianceMax], [satVari
     inputSat = Object.values(inputSat)[0]
     inputLum = Object.values(inputLum)[0]
 
-    console.log(inputColor, inputHue, inputSat, inputLum)
+    // console.log(inputColor, inputHue, inputSat, inputLum)
 
     let hueRandomNumberRange = [hueVarianceMin + Number(inputHue), hueVarianceMax + Number(inputHue), hueVarianceMin - Number(inputHue), hueVarianceMax - Number(inputHue)]
     let satRandomNumberRange = [satVarianceMin + Number(inputSat), satVarianceMax + Number(inputSat), satVarianceMin - Number(inputSat), hueVarianceMax - Number(inputSat)]
     let lumRandomNumberRange = [lumVarianceMin + Number(inputLum), lumVarianceMax + Number(inputLum), lumVarianceMin - Number(inputLum), hueVarianceMax - Number(inputLum)]
 
-    console.log(hueRandomNumberRange, satRandomNumberRange, lumRandomNumberRange)
+    // console.log(hueRandomNumberRange, satRandomNumberRange, lumRandomNumberRange)
 
     correctColorIndex = randomInteger([1,9])
     localStorage.setItem("correctColorIndexLocalStorageItem", correctColorIndex)
@@ -68,8 +94,8 @@ function getColorVariants(inputColor, [hueVarianceMin, hueVarianceMax], [satVari
 
 function processUserInput(currentColorGridSquare) {
     correctColorIndex = localStorage.getItem("correctColorIndexLocalStorageItem")
-    console.log(currentColorGridSquare)
-    console.log(correctColorIndex)
+    // console.log(currentColorGridSquare)
+    // console.log(correctColorIndex)
     if (correctColorIndex == currentColorGridSquare) {
         console.log("correct square clicked")
     }
@@ -78,10 +104,10 @@ function processUserInput(currentColorGridSquare) {
     }
 }
 
-function initalizeEventListeners() {
+function initializeEventListeners() {
 
     let colorGridSquaresObject = document.querySelectorAll("div.colorGridSquare")
-    console.log(colorGridSquaresObject)
+    // console.log(colorGridSquaresObject)
 
     for (i = 0; i < Object.values(colorGridSquaresObject).length; i++) {
 
@@ -92,7 +118,7 @@ function initalizeEventListeners() {
         })
 
         // console.log(`target: ${event.target.id}`)
-        console.log(currentColorGridSquare)
+        // console.log(currentColorGridSquare)
 
     };
 }
@@ -114,9 +140,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (page == "gamePage") {
         setTimeout(() => {
-            getColorVariants("hsl(100, 100%, 50%)", [15, 40], [-5, -50], [10, 30])
+            initializeMemorizePhase([0, 360], [50, 90], [30, 70])
+            manageCountdown()
+            setColorVariants("hsl(100, 100%, 50%)", [15, 40], [-5, -50], [10, 30])
 
-            initalizeEventListeners(localStorage.getItem("correctColorIndex"))
+            initializeEventListeners(localStorage.getItem("correctColorIndex"))
         }, 20);
         // document.body.style.backgroundColor = "hsl(100, 100%, 50%)"
     }
