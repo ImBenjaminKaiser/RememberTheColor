@@ -1,3 +1,5 @@
+let correctColorIndex = 0
+
 // https://stackoverflow.com/a/24152886
 function randomInteger(rangeArray) {
   return Math.floor(Math.random() * (rangeArray[1] - rangeArray[0] + 1)) + rangeArray[0];
@@ -33,7 +35,8 @@ function getColorVariants(inputColor, [hueVarianceMin, hueVarianceMax], [satVari
 
     console.log(hueRandomNumberRange, satRandomNumberRange, lumRandomNumberRange)
 
-    let correctColorIndex = randomInteger([1,9])
+    correctColorIndex = randomInteger([1,9])
+    localStorage.setItem("correctColorIndexLocalStorageItem", correctColorIndex)
 
     console.log(correctColorIndex)
 
@@ -63,6 +66,38 @@ function getColorVariants(inputColor, [hueVarianceMin, hueVarianceMax], [satVari
     }
 }
 
+function processUserInput(currentColorGridSquare) {
+    correctColorIndex = localStorage.getItem("correctColorIndexLocalStorageItem")
+    console.log(currentColorGridSquare)
+    console.log(correctColorIndex)
+    if (correctColorIndex == currentColorGridSquare) {
+        console.log("correct square clicked")
+    }
+    else {
+        console.log("incorrect square")
+    }
+}
+
+function initalizeEventListeners() {
+
+    let colorGridSquaresObject = document.querySelectorAll("div.colorGridSquare")
+    console.log(colorGridSquaresObject)
+
+    for (i = 0; i < Object.values(colorGridSquaresObject).length; i++) {
+
+        let currentColorGridSquare = colorGridSquaresObject[i]
+
+        currentColorGridSquare.addEventListener("click", () => {
+            processUserInput(currentColorGridSquare.id)
+        })
+
+        // console.log(`target: ${event.target.id}`)
+        console.log(currentColorGridSquare)
+
+    };
+}
+
+
 document.addEventListener("DOMContentLoaded", () => {
 
     if (page == "homepage"){
@@ -70,16 +105,18 @@ document.addEventListener("DOMContentLoaded", () => {
         let randomLightHSL = "hsl(" + Math.random()*255 +", 90%, 90%)"
         document.body.style.setProperty("background-color", randomLightHSL)
 
-        Object.values(document.getElementsByTagName("a")).forEach(element => {
-            randomDarkHSL = "hsl(" + Math.random()*255 + ", 90%, 20%)"
-            element.style.setProperty("background-color", randomDarkHSL)
-        });
+        // Object.values(document.getElementsByTagName("a")).forEach(element => {
+        //     randomDarkHSL = "hsl(" + Math.random()*255 + ", 90%, 20%)"
+        //     element.style.setProperty("background-color", randomDarkHSL)
+        // });
 
     }
 
     if (page == "gamePage") {
         setTimeout(() => {
             getColorVariants("hsl(100, 100%, 50%)", [15, 40], [-5, -50], [10, 30])
+
+            initalizeEventListeners(localStorage.getItem("correctColorIndex"))
         }, 20);
         // document.body.style.backgroundColor = "hsl(100, 100%, 50%)"
     }
