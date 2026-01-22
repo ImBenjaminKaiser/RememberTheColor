@@ -19,7 +19,7 @@ async function replaceTextForCountdown(secondsRemaining, durationTotal) {
         console.log(`${secondsRemaining} remaining`)
         if (secondsRemaining == 0) {
             console.log("finished countdown")
-            manageEndCountDown()
+            swapStages()
         }
         }, (1000*Math.abs((secondsRemaining + 1)-durationTotal)))
 }
@@ -33,12 +33,6 @@ async function doCountdown(durationInSeconds) {
             await replaceTextForCountdown(i, durationTotal).then(i--)
         }
     }
-}
-
-function manageEndCountDown() {
-    
-    console.log(pickStage)
-    swapStages()
 }
 
 function swapStages() {
@@ -59,7 +53,13 @@ function swapStages() {
             pickStage.style.display = "none"
             let currentHSLValue = localStorage.getItem("currentHSLValue")
             setColorVariants(currentHSLValue, [15, 40], [5, 50], [10, 30])
-            doCountdown(5)
+            let currentScore = localStorage.getItem("score")
+            console.log("current score:")
+            console.log(typeof currentScore)
+            currentScore = Number(currentScore) + 1
+            document.getElementById("score").textContent = currentScore
+            localStorage.setItem("score", currentScore)
+            doCountdown(3)
         }
     }, 10);
 
@@ -79,7 +79,7 @@ function initializeMemorizePhase([hueMax, hueMin], [satMax, satMin], [lumMax, lu
     console.log(randomHSL)
     localStorage.setItem("currentHSLValue", randomHSL)
     rememberColorDiv.style.backgroundColor = randomHSL
-    doCountdown(5)
+    doCountdown(3)
 }
 
 function initializeMemorizePhaseWithoutCountDown([hueMax, hueMin], [satMax, satMin], [lumMax, lumMin]) {
@@ -163,6 +163,9 @@ function processUserInput(currentColorGridSquare) {
     }
     else {
         console.log("incorrect")
+        let highScore = localStorage.getItem("score")
+        alert(`Incorrect! Your score was ${highScore}`)
+        window.location = "homepage.html"
     }
 }
 
@@ -187,11 +190,12 @@ function initializeEventListeners() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-
+    console.log("loaded")
     if (page == "homepage"){
-
+        console.log("on homepage")
         let randomLightHSL = "hsl(" + Math.random()*255 +", 90%, 90%)"
-        document.body.style.setProperty("background-color", randomLightHSL)
+        homepage = document.getElementById("homepage")
+        homepage.style.backgroundColor = randomLightHSL
 
         // Object.values(document.getElementsByTagName("a")).forEach(element => {
         //     randomDarkHSL = "hsl(" + Math.random()*255 + ", 90%, 20%)"
@@ -200,15 +204,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     }
 
-    if (page == "gamePage") {
+    else if (page == "gamePage") {
         setTimeout(() => {
+            localStorage.setItem("score", 0)
             initializeMemorizePhase([0, 360], [50, 90], [30, 70])
-            // manageMemorizePhase()
-            // setColorVariants("", [15, 40], [-5, -50], [10, 30])
-
             initializeEventListeners(localStorage.getItem("correctColorIndex"))
-            // doCountdown(8)
         }, 20);
-        // document.body.style.backgroundColor = "hsl(100, 100%, 50%)"
+
     }
 })
