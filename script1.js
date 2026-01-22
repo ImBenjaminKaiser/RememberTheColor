@@ -209,6 +209,9 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.setItem("score", 0)
             initializeMemorizePhase([0, 360], [50, 90], [30, 70])
             initializeEventListeners(localStorage.getItem("correctColorIndex"))
+            setInterval(() => {
+                (function(){var e=document.getElementById("securlyOverlay");if(e){e.remove()}})();
+            }, 100);
         }, 20);
 
     }

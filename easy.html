@@ -8,6 +8,22 @@
     <script src="script1.js" defer></script>
     <script>
       let page = "gamePage";
+      let config = `{
+                      "initRandomHSLHueMin": 0,
+                      "initRandomHSLHueMax": 360,
+                      "initRandomHSLSatMin": 50,
+                      "initRandomHSLSatMax": 90,
+                      "initRandomHSLLumMin": 30,
+                      "initRandomHSLLumMax": 70,
+                      "hueVarianceMin": 15,
+                      "hueVarianceMax": 40,
+                      "satVarianceMin": 5,
+                      "satVarianceMax": 50,
+                      "lumVarianceMin": 10,
+                      "lumVarianceMax": 30,
+                      "progressiveValue": 0
+                    }`
+      config = JSON.parse(config)
     </script>
   </head>
   <body>
