@@ -1,0 +1,12 @@
+init memorize
+    sets memorize square to be color
+    calls doCountdown
+doCountdown
+    calls replaceTextForCountdown
+replaceTextForCountdown
+    calls manageEndCountDown when ended
+manageEndCountDown
+    calls setColorVariants with hsl in localStorage
+    calls swapstages
+swapstages
+    
