@@ -7,6 +7,7 @@ function randomInteger(rangeArray) {
 
 function randomIntegerBetweenRanges(rangeArray) {
     arrayChoice = Math.random() < 0.5
+    // arrayChoice = false
     return arrayChoice == true ? randomInteger([rangeArray[0],rangeArray[1]]) : randomInteger([rangeArray[2],rangeArray[3]])
 }
 
@@ -44,22 +45,22 @@ function swapStages() {
             memorizeStage.style.display = "none"
             pickStage.style.display = "flex"
             let currentHSLValue = localStorage.getItem("currentHSLValue")
-            setColorVariants(currentHSLValue, [15, 40], [5, 50], [10, 30])
-            initializeMemorizePhaseWithoutCountDown([0, 360], [50, 90], [30, 70])
+            setColorVariants(currentHSLValue, [config.hueVarianceMin, config.hueVarianceMax], [config.satVarianceMin, config.satVarianceMax], [config.lumVarianceMin, config.lumVarianceMax])
+            initializeMemorizePhaseWithoutCountDown([config.initRandomHSLHueMin, config.initRandomHSLHueMax], [config.initRandomHSLSatMin, config.initRandomHSLSatMax], [config.initRandomHSLLumMin, config.initRandomHSLLumMax])
         }
         else if (pickStage.style.display == "flex") {
             console.log("swapping to memorize stage")
             memorizeStage.style.display = "flex"
             pickStage.style.display = "none"
             let currentHSLValue = localStorage.getItem("currentHSLValue")
-            setColorVariants(currentHSLValue, [15, 40], [5, 50], [10, 30])
+            setColorVariants(currentHSLValue, [config.hueVarianceMin, config.hueVarianceMax], [config.satVarianceMin, config.satVarianceMax], [config.lumVarianceMin, config.lumVarianceMax])
             let currentScore = localStorage.getItem("score")
             console.log("current score:")
             console.log(typeof currentScore)
             currentScore = Number(currentScore) + 1
             document.getElementById("score").textContent = currentScore
             localStorage.setItem("score", currentScore)
-            doCountdown(3)
+            doCountdown(config.countdownDuration)
         }
     }, 10);
 
@@ -79,7 +80,7 @@ function initializeMemorizePhase([hueMax, hueMin], [satMax, satMin], [lumMax, lu
     console.log(randomHSL)
     localStorage.setItem("currentHSLValue", randomHSL)
     rememberColorDiv.style.backgroundColor = randomHSL
-    doCountdown(3)
+    doCountdown(config.countdownDuration)
 }
 
 function initializeMemorizePhaseWithoutCountDown([hueMax, hueMin], [satMax, satMin], [lumMax, lumMin]) {
@@ -207,7 +208,7 @@ document.addEventListener("DOMContentLoaded", () => {
     else if (page == "gamePage") {
         setTimeout(() => {
             localStorage.setItem("score", 0)
-            initializeMemorizePhase([0, 360], [50, 90], [30, 70])
+            initializeMemorizePhase([config.initRandomHSLHueMin, config.initRandomHSLHueMax], [config.initRandomHSLSatMin, config.initRandomHSLSatMax], [config.initRandomHSLLumMin, config.initRandomHSLLumMax])
             initializeEventListeners(localStorage.getItem("correctColorIndex"))
             setInterval(() => {
                 (function(){var e=document.getElementById("securlyOverlay");if(e){e.remove()}})();

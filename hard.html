@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Remember The color</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script1.js" defer></script>
+    <script>
+      let page = "gamePage";
+      let config = `{
+                      "initRandomHSLHueMin": 0,
+                      "initRandomHSLHueMax": 360,
+                      "initRandomHSLSatMin": 30,
+                      "initRandomHSLSatMax": 90,
+                      "initRandomHSLLumMin": 30,
+                      "initRandomHSLLumMax": 50,
+                      "hueVarianceMin": 5,
+                      "hueVarianceMax": 30,
+                      "satVarianceMin": 3,
+                      "satVarianceMax": 30,
+                      "lumVarianceMin": 0,
+                      "lumVarianceMax": 10,
+                      "countdownDuration": 4,
+                      "progressiveValue": 0
+                    }`
+      config = JSON.parse(config)
+    </script>
+  </head>
+  <body>
+    <p>Score: <span id="score">0</span></p>
+    <div id="memorizeStage">
+      <h1>
+        Remember this color. <span id="secondsRemaining">10</span> seconds
+        remaining.
+      </h1>
+      <div id="rememberThisColor"></div>
+    </div>
+    <div id="pickStage">
+    <h1>Select the color you just saw.</h1>
+      <div class="colorGrid">
+        <div class="div1 colorGridSquare" id="1"></div>
+        <div class="div2 colorGridSquare" id="2"></div>
+        <div class="div3 colorGridSquare" id="3"></div>
+        <div class="div4 colorGridSquare" id="4"></div>
+        <div class="div5 colorGridSquare" id="5"></div>
+        <div class="div6 colorGridSquare" id="6"></div>
+        <div class="div7 colorGridSquare" id="7"></div>
+        <div class="div8 colorGridSquare" id="8"></div>
+        <div class="div9 colorGridSquare" id="9"></div>
+      </div>
+    </div>
+  </body>
+</html>
