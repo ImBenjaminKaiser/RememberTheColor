@@ -11,18 +11,19 @@
       let config = `{
                       "initRandomHSLHueMin": 0,
                       "initRandomHSLHueMax": 360,
-                      "initRandomHSLSatMin": 30,
+                      "initRandomHSLSatMin": 10,
                       "initRandomHSLSatMax": 90,
-                      "initRandomHSLLumMin": 30,
-                      "initRandomHSLLumMax": 50,
+                      "initRandomHSLLumMin": 10,
+                      "initRandomHSLLumMax": 90,
                       "hueVarianceMin": 5,
-                      "hueVarianceMax": 30,
+                      "hueVarianceMax": 25,
                       "satVarianceMin": 3,
-                      "satVarianceMax": 30,
+                      "satVarianceMax": 20,
                       "lumVarianceMin": 0,
                       "lumVarianceMax": 10,
-                      "countdownDuration": 4,
-                      "progressiveValue": 0
+                      "countdownDuration": 3,
+                      "progressiveValue": 0,
+                      "minDiffFactor": 0.05
                     }`
       config = JSON.parse(config)
     </script>

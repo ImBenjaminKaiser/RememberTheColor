@@ -92,10 +92,10 @@ function initializeMemorizePhaseWithoutCountDown([hueMax, hueMin], [satMax, satM
     rememberColorDiv.style.backgroundColor = randomHSL
 }
 
+
 function setColorVariants(inputColor, [hueVarianceMin, hueVarianceMax], [satVarianceMin, satVarianceMax], [lumVarianceMin, lumVarianceMax]) {
 
     colorSquares = document.getElementsByClassName("colorGridSquare")
-    // console.log(colorSquares)
     computedColorValuesArray = []
 
     let inputHue = /(?<=hsl\()[^,]+(?=,)/gm.exec(inputColor) // Get Hue value from hsl input
@@ -111,34 +111,79 @@ function setColorVariants(inputColor, [hueVarianceMin, hueVarianceMax], [satVari
 
     // console.log(inputColor, inputHue, inputSat, inputLum)
 
-    let hueRandomNumberRange = [hueVarianceMin + Number(inputHue), hueVarianceMax + Number(inputHue), hueVarianceMin - Number(inputHue), hueVarianceMax - Number(inputHue)]
-    let satRandomNumberRange = [satVarianceMin + Number(inputSat), satVarianceMax + Number(inputSat), satVarianceMin - Number(inputSat), hueVarianceMax - Number(inputSat)]
-    let lumRandomNumberRange = [lumVarianceMin + Number(inputLum), lumVarianceMax + Number(inputLum), lumVarianceMin - Number(inputLum), hueVarianceMax - Number(inputLum)]
+    let hueRandomNumberRange = [hueVarianceMin + Number(inputHue), hueVarianceMax + Number(inputHue), Math.abs(hueVarianceMin - Number(inputHue)),  Math.abs(hueVarianceMax - Number(inputHue))]
+    console.log(hueRandomNumberRange);
+    let satRandomNumberRange = [satVarianceMin + Number(inputSat), satVarianceMax + Number(inputSat), Math.abs(satVarianceMin - Number(inputSat)), Math.abs(hueVarianceMax - Number(inputSat))]
+    let lumRandomNumberRange = [lumVarianceMin + Number(inputLum), lumVarianceMax + Number(inputLum), Math.abs(lumVarianceMin - Number(inputLum)), Math.abs(hueVarianceMax - Number(inputLum))]
 
     // console.log(hueRandomNumberRange, satRandomNumberRange, lumRandomNumberRange)
 
     correctColorIndex = randomInteger([1,9])
     localStorage.setItem("correctColorIndexLocalStorageItem", correctColorIndex)
 
-    console.log(correctColorIndex)
+    // console.log(correctColorIndex)
 
     for (let x = 1; x <= 9; x++) {
-        console.log(`loop ${x}`)
+        // console.log(`loop ${x}`)
         if (correctColorIndex == x) {
-            console.log("correct square index reached")
+            // console.log("correct square index reached")
             correctSquare = document.getElementsByClassName(`div${x}`)
             correctSquare = Object.values(correctSquare)[0]
             correctSquare.style.backgroundColor = inputColor
+            // correctSquare.style.borderColor = "red"
+            // correctSquare.style.borderWidth = "8px"
         }
 
         else {
-
-            let adjustedHueValue = Math.abs(randomIntegerBetweenRanges(hueRandomNumberRange) % 255)
-            let adjustedSatValue = Math.abs(randomIntegerBetweenRanges(satRandomNumberRange))
+            var adjustedHueValue = Math.abs(randomIntegerBetweenRanges(hueRandomNumberRange))
+            var adjustedSatValue = Math.abs(randomIntegerBetweenRanges(satRandomNumberRange))
             adjustedSatValue > 100 ? adjustedSatValue = 100 : adjustedSatValue
-            let adjustedLumValue = Math.abs(randomIntegerBetweenRanges(lumRandomNumberRange) % 100)
+            var adjustedLumValue = Math.abs(randomIntegerBetweenRanges(lumRandomNumberRange) % 100)
             adjustedLumValue < 20 ? adjustedLumValue = 20 : adjustedLumValue
 
+            // var hueDiff = adjustedHueValue > 255 ? 
+            var satDiff = Math.abs(adjustedHueValue - inputHue)
+
+            var satDiff = Math.abs(adjustedSatValue - inputSat)
+            var lumDiff = Math.abs(adjustedLumValue - inputLum)
+
+            var totalDiff = hueDiff + satDiff + lumDiff
+            console.log("totalDiff ==> ", totalDiff);
+
+            var minDiff = (config.hueVarianceMin + config.satVarianceMin + config.lumVarianceMin)/config.minDiffFactor
+            console.log("minDiff  ==> ", minDiff );
+            var maxDiff = (config.hueVarianceMin + config.satVarianceMin + config.lumVarianceMin)/config.maxDiffFactor
+            console.log("maxDiff ==> ", maxDiff);
+            console.log("in range?", !((totalDiff < minDiff) || (totalDiff > maxDiff)));
+            console.log("-------------------------")
+            let count = 0
+            if ((totalDiff > minDiff) || (totalDiff < maxDiff)) {
+                while ((totalDiff > minDiff) || (totalDiff < maxDiff)) {
+                    var adjustedHueValue = Math.abs(randomIntegerBetweenRanges(hueRandomNumberRange) % 255)
+                    var adjustedSatValue = Math.abs(randomIntegerBetweenRanges(satRandomNumberRange))
+                    adjustedSatValue > 100 ? adjustedSatValue = 100 : adjustedSatValue
+                    var adjustedLumValue = Math.abs(randomIntegerBetweenRanges(lumRandomNumberRange) % 100)
+                    adjustedLumValue < 20 ? adjustedLumValue = 20 : adjustedLumValue
+
+                    var hueDiff = Math.abs(adjustedHueValue - inputHue)
+                    var satDiff = Math.abs(adjustedSatValue - inputSat)
+                    var lumDiff = Math.abs(adjustedLumValue - inputLum)
+
+                    var totalDiff = hueDiff + satDiff + lumDiff
+                    console.log("totalDiff ==> ", totalDiff);
+
+                    var minDiff = (config.hueVarianceMin + config.satVarianceMin + config.lumVarianceMin)/config.minDiffFactor
+                    console.log("minDiff  ==> ", minDiff );
+                    var maxDiff = (config.hueVarianceMin + config.satVarianceMin + config.lumVarianceMin)/config.maxDiffFactor
+                    console.log("maxDiff ==> ", maxDiff);
+                    console.log("in range?", !((totalDiff < minDiff) || (totalDiff > maxDiff)));
+                    console.log("-------------------------")
+                    count = count + 1
+                    if (count > 200) {
+                        break
+                    }
+                }
+            }
             satReplaced = inputColor.replace(/(?<=, )[^,]+(?=%,)/gm, adjustedSatValue)
             lumReplaced = satReplaced.replace(/(?<=%, )[^,]+(?=%)/gm, adjustedLumValue)
             hueReplacedFinalColor = lumReplaced.replace(/(?<=hsl\()[^,]+(?=,)/gm, adjustedHueValue)
@@ -209,7 +254,7 @@ document.addEventListener("DOMContentLoaded", () => {
         setTimeout(() => {
             localStorage.setItem("score", 0)
             initializeMemorizePhase([config.initRandomHSLHueMin, config.initRandomHSLHueMax], [config.initRandomHSLSatMin, config.initRandomHSLSatMax], [config.initRandomHSLLumMin, config.initRandomHSLLumMax])
-            initializeEventListeners(localStorage.getItem("correctColorIndex"))
+            initializeEventListeners(localStorage.getItem("correctColorIndexLocalStorageItem"))
             setInterval(() => {
                 (function(){var e=document.getElementById("securlyOverlay");if(e){e.remove()}})();
             }, 100);
