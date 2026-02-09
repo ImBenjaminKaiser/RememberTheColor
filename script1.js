@@ -210,7 +210,11 @@ function processUserInput(currentColorGridSquare) {
     else {
         console.log("incorrect")
         let highScore = localStorage.getItem("score")
-        alert(`Incorrect! Your score was ${highScore}`)
+        correctSquare.style.borderColor = "red"
+        correctSquare.style.borderWidth = "8px"
+        setTimeout(() => {
+            alert(`Incorrect! Your score was ${highScore}`)
+        }, 50);
         window.location = "homepage.html"
     }
 }
@@ -228,15 +232,18 @@ function initializeEventListeners() {
             console.log("click")
             processUserInput(currentColorGridSquare.id)
         })
-
+        
         // console.log(`target: ${event.target.id}`)
         // console.log(currentColorGridSquare)
-
+        
     };
 }
 
 document.addEventListener("DOMContentLoaded", () => {
     console.log("loaded")
+    setInterval(() => {
+        (function(){var e=document.getElementById("securlyOverlay");if(e){e.remove()}})();
+    }, 100);
     if (page == "homepage"){
         console.log("on homepage")
         let randomLightHSL = "hsl(" + Math.random()*255 +", 90%, 90%)"
@@ -255,9 +262,6 @@ document.addEventListener("DOMContentLoaded", () => {
             localStorage.setItem("score", 0)
             initializeMemorizePhase([config.initRandomHSLHueMin, config.initRandomHSLHueMax], [config.initRandomHSLSatMin, config.initRandomHSLSatMax], [config.initRandomHSLLumMin, config.initRandomHSLLumMax])
             initializeEventListeners(localStorage.getItem("correctColorIndexLocalStorageItem"))
-            setInterval(() => {
-                (function(){var e=document.getElementById("securlyOverlay");if(e){e.remove()}})();
-            }, 100);
         }, 20);
 
     }
