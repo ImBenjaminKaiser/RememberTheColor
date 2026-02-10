@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Remember The color</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+    <script>
+      let page = "gamePage";
+      let config = `{
+                      "initRandomHSLHueMin": 0,
+                      "initRandomHSLHueMax": 360,
+                      "initRandomHSLSatMin": 50,
+                      "initRandomHSLSatMax": 90,
+                      "initRandomHSLLumMin": 30,
+                      "initRandomHSLLumMax": 70,
+                      "hueVarianceMin": 15,
+                      "hueVarianceMax": 40,
+                      "satVarianceMin": 5,
+                      "satVarianceMax": 50,
+                      "lumVarianceMin": 10,
+                      "lumVarianceMax": 30,
+                      "countdownDuration": 3,
+                      "progressiveValue": 0,
+                      "minDiffFactor": 0.6,
+                      "maxDiffFactor": 0.5,
+                      "askQuestion": "true"
+                    }`
+      config = JSON.parse(config)
+      
+    </script>
+    <style>
+        #questionStage {
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+        textarea {
+            resize: none;
+            margin-right: 8px;
+        }
+        .inputWrapper {
+            height: 32px;
+            display:flex
+        }
+        #colorText {
+            /* width: 70vmin; */
+            font-size: 30vmin;
+            line-height: 0%;
+            /* height:auto; */
+            text-transform: uppercase;
+            font-weight: 900;
+            /* text-align: center; */
+        }
+        #colorText:after {
+            content: "";
+            display: inline-block;
+            width: 100%;
+        }
+    </style>
+  </head>
+  <body>
+    <p id="scoreElement">Score: <span id="score">0</span></p>
+    <div id="memorizeStage">
+      <h1>
+        Remember this color. <span id="secondsRemaining">10</span> seconds
+        remaining.
+      </h1>
+      <div id="rememberThisColor"></div>
+    </div>
+    <div id="questionStage">
+        <span id="colorText">placeholder name</span>
+        <p>Input the COLOR of the text.</p>
+        <div class="inputWrapper">
+            <textarea name="colorTextInput" id="colorTextInput" cols="20" rows="1" autofocus></textarea>
+            <!-- https://stackoverflow.com/a/22289741 -->
+            <button type="button" onclick="processColorTextInput(document.getElementById('colorTextInput').value)">Enter</button>
+        </div>
+        <!-- <button type="button" onclick="alert('cick')">Enter</button> -->
+
+    </div>
+    <div id="pickStage">
+    <h1>Select the color you just saw.</h1>
+      <div class="colorGrid">
+        <div class="div1 colorGridSquare" id="1"></div>
+        <div class="div2 colorGridSquare" id="2"></div>
+        <div class="div3 colorGridSquare" id="3"></div>
+        <div class="div4 colorGridSquare" id="4"></div>
+        <div class="div5 colorGridSquare" id="5"></div>
+        <div class="div6 colorGridSquare" id="6"></div>
+        <div class="div7 colorGridSquare" id="7"></div>
+        <div class="div8 colorGridSquare" id="8"></div>
+        <div class="div9 colorGridSquare" id="9"></div>
+      </div>
+    </div>
+  </body>
+</html>
