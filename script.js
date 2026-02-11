@@ -207,21 +207,21 @@ function setColorVariants(inputColor, [hueVarianceMin, hueVarianceMax], [satVari
             var adjustedLumValue = Math.abs(randomIntegerBetweenRanges(lumRandomNumberRange) % 100)
             adjustedLumValue < 20 ? adjustedLumValue = 20 : adjustedLumValue
 
-            // var hueDiff = adjustedHueValue > 255 ? 
+            // var hueDiff = adjustedHueValue > 255 ?
             var satDiff = Math.abs(adjustedHueValue - inputHue)
 
             var satDiff = Math.abs(adjustedSatValue - inputSat)
             var lumDiff = Math.abs(adjustedLumValue - inputLum)
 
             var totalDiff = hueDiff + satDiff + lumDiff
-            console.log("totalDiff ==> ", totalDiff);
+            // console.log("totalDiff ==> ", totalDiff);
 
             var minDiff = (config.hueVarianceMin + config.satVarianceMin + config.lumVarianceMin)/config.minDiffFactor
-            console.log("minDiff  ==> ", minDiff );
+            // console.log("minDiff  ==> ", minDiff );
             var maxDiff = (config.hueVarianceMin + config.satVarianceMin + config.lumVarianceMin)/config.maxDiffFactor
-            console.log("maxDiff ==> ", maxDiff);
-            console.log("in range?", !((totalDiff < minDiff) || (totalDiff > maxDiff)));
-            console.log("-------------------------")
+            // console.log("maxDiff ==> ", maxDiff);
+            // console.log("in range?", !((totalDiff < minDiff) || (totalDiff > maxDiff)));
+            // console.log("-------------------------")
             let count = 0
             if ((totalDiff > minDiff) || (totalDiff < maxDiff)) {
                 while ((totalDiff > minDiff) || (totalDiff < maxDiff)) {
