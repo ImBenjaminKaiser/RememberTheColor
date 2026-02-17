@@ -76,6 +76,7 @@ function swapStages() {
                         console.log("swapping to question stage")
                         memorizeStage.style.display = "none"
                         questionStage.style.display = "flex"
+                        document.getElementById("scoreElement").style.display = "flex"
                         // pickStage.style.display = "flex"
                         document.getElementById("scoreElement").style.display = "none"
                         initializeQuestionStage()
